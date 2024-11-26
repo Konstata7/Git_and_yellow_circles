@@ -1,6 +1,8 @@
 import sys
 
 from PyQt6 import uic, QtGui
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import QApplication, QMainWindow
 
 
@@ -9,20 +11,27 @@ class GitAndYellowCircles(QMainWindow):
         super().__init__()
         uic.loadUi('UI.ui', self)
         self.pushButton.clicked.connect(self.button_clicked)
-        self.drawn = False
+        canvas = QtGui.QPixmap(781, 681)
+        canvas.fill(Qt.GlobalColor.white)
+        self.label.setPixmap(canvas)
 
     def button_clicked(self):
         from random import randrange
         canvas = self.label.pixmap()
+        canvas.fill(Qt.GlobalColor.white)
         painter = QtGui.QPainter(canvas)
         pen = QtGui.QPen()
         pen.setWidth(1)
-        pen.setColor(QtGui.QColor(255, 247, 0))
+        pen.setColor(QtGui.QColor(255, 255, 0))
         painter.setPen(pen)
 
-        painter.drawEllipse(21, 101, randrange(22, 780), randrange(102, 681))
+        brush = QtGui.QBrush()
+        brush.setColor(QtGui.QColor(255, 255, 0))
+        brush.setStyle(Qt.BrushStyle.SolidPattern)
+        painter.setBrush(brush)
+
+        painter.drawEllipse(20, 70, int(randrange(22, 700)), int(randrange(102, 540)))
         painter.end()
-        self.drawn = True
         self.label.setPixmap(canvas)
 
 
